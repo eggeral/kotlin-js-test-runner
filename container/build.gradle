@@ -1,0 +1,40 @@
+apply plugin: 'kotlin2js'
+apply plugin: 'kotlin-js-test'
+
+
+def outDir = "${buildDir}/kotlin2js"
+
+compileKotlin2Js{
+    kotlinOptions.outputFile = "${outDir}/${project.name}.js"
+    kotlinOptions.suppressWarnings = true
+    kotlinOptions.version = true
+    kotlinOptions.verbose = true
+    kotlinOptions.sourceMap = true
+}
+
+compileTestKotlin2Js{
+    kotlinOptions.outputFile = "${outDir}/${project.name}-tests.js"
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-js-library:$kotlin_version"
+}
+
+sourceSets {
+    test.kotlin.srcDirs += "src/main/kotlin" // Needed for Gradle. Gradle Kotlin2JS does not include src/main/kotlin when building src/test/kotlin?
+}
+
+
+task copyJsFilesFromDependencies(type: Copy) {
+    from configurations.compile.collect {
+        it.isDirectory() ? it : zipTree(it)
+    }
+    into "$outDir"
+    include { fileTreeElement ->
+        def path = fileTreeElement.path
+        path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
+    }
+}
+build.dependsOn copyJsFilesFromDependencies
+classes.dependsOn compileKotlin2Js
+classes.dependsOn compileTestKotlin2Js

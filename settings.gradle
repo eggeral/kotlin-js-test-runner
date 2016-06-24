@@ -1,0 +1,4 @@
+rootProject.name = 'kotlin-js-test-runner'
+
+include 'container'
+include 'test-runner'

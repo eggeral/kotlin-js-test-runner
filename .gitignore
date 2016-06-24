@@ -1,0 +1,52 @@
+# Java-related stuff
+*.class
+*.classpath
+**/.metadata/
+lib/
+**/target/
+**/out/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Eclipse-related stuff
+*.project
+/.settings/
+
+# intelliJ-related stuff
+*.idea
+*.iml
+*.iws
+*.ipr
+**/.metadata/
+**/.settings/
+classes/
+
+#emacs backup
+*~
+
+# Package files
+*.jar
+*.zip
+*.war
+*.ear
+*.jar.sha1
+
+#gradle
+**/build/
+**/.gradle
+#**/gradle/ # do not ignore it! It is needed by the gradle-wrapper build
+!gradle-wrapper.jar
+
+# android studio
+**/local.properties
+
+
+# local files
+*.orig
+*.log
+*.dll
+.DS_Store
