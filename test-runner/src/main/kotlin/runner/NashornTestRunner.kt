@@ -1,5 +1,6 @@
 package runner
 
+import java.io.File
 import java.io.FileReader
 import java.io.InputStreamReader
 import javax.script.Invocable
@@ -12,7 +13,7 @@ class NashornTestRunner(jsFiles: MutableList<String>) {
     init {
         nashorn.eval(InputStreamReader(javaClass.getResourceAsStream("/qunitfake.js")))
         jsFiles.forEach {
-            nashorn.eval(FileReader(it))
+            nashorn.eval("load('${File(it).canonicalPath}')")
         }
     }
 
