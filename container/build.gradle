@@ -1,11 +1,9 @@
 apply plugin: 'kotlin2js'
-apply plugin: 'kotlin-js-test'
 
-
-def outDir = "${buildDir}/kotlin2js"
+def outDir = "${buildDir}/classes"
 
 compileKotlin2Js{
-    kotlinOptions.outputFile = "${outDir}/${project.name}.js"
+    kotlinOptions.outputFile = "${outDir}/main/${project.name}_main.js"
     kotlinOptions.suppressWarnings = true
     kotlinOptions.version = true
     kotlinOptions.verbose = true
@@ -13,7 +11,7 @@ compileKotlin2Js{
 }
 
 compileTestKotlin2Js{
-    kotlinOptions.outputFile = "${outDir}/${project.name}-tests.js"
+    kotlinOptions.outputFile = "${outDir}/test/${project.name}_test.js"
 }
 
 dependencies {
@@ -29,7 +27,7 @@ task copyJsFilesFromDependencies(type: Copy) {
     from configurations.compile.collect {
         it.isDirectory() ? it : zipTree(it)
     }
-    into "$outDir"
+    into "$outDir/main/lib"
     include { fileTreeElement ->
         def path = fileTreeElement.path
         path.endsWith(".js") && (path.startsWith("META-INF/resources/") || !path.startsWith("META-INF/"))
@@ -37,4 +35,3 @@ task copyJsFilesFromDependencies(type: Copy) {
 }
 build.dependsOn copyJsFilesFromDependencies
 classes.dependsOn compileKotlin2Js
-classes.dependsOn compileTestKotlin2Js
